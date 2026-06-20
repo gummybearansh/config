@@ -1,0 +1,28 @@
+return {}
+-- return {
+--   {
+--     "sphamba/smear-cursor.nvim",
+--     opts = {
+--       -- 1. "Snappy" Settings (Not gooey)
+--       stiffness = 0.8,       -- High stiffness = faster, snappier follow
+--       trailing_stiffness = 0.5, -- The tail catches up quickly
+--       distance_stop_animating = 0.1, 
+--
+--       -- 2. THE FIX: use "Blocks" instead of "Text" for the trail
+--       -- This prevents the "characters before and after" from looking modified.
+--       -- It just draws a fading block behind your cursor.
+--       legacy_computing_symbols_support = false,
+--
+--       -- 3. Visual Polish
+--       -- Optional: Set this to false if you want the trail ONLY on big jumps, 
+--       -- not when just moving up/down one line.
+--       smear_between_neighbor_lines = true,
+--
+--       -- 4. Color (Crucial for Block Mode)
+--       -- Since we are drawing blocks, we need a color. 
+--       -- "none" uses text color. Put a hex code here to match your cursor.
+--       -- Example: "#cba6f7" is Catppuccin Mauve (Purple)
+--       cursor_color = "#cba6f7", 
+--     },
+--   },
+-- }

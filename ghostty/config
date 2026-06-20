@@ -1,0 +1,32 @@
+# --- APPEARANCE ---
+theme = Catppuccin Mocha
+font-family = 0xProto Nerd Font Mono
+font-size = 18
+font-feature = -calt, -liga, -dlig, -clig
+
+# --- WINDOW ---
+macos-titlebar-style = hidden
+# maximize = true
+fullscreen = true
+macos-non-native-fullscreen = true
+window-padding-x = 10
+window-padding-y = 20
+window-padding-balance = true
+
+# --- CURSOR ---
+cursor-style = block
+cursor-style-blink = false
+# Let Neovim/Shell control the cursor shape (Block in Normal, Bar in Insert)
+shell-integration-features = no-cursor
+
+# --- MACOS & INPUT ---
+# CRITICAL for Neovim mappings (Alt/Opt key)
+macos-option-as-alt = true
+# Hide mouse when you start typing
+mouse-hide-while-typing = true
+# Don't ask for confirmation when closing the window
+confirm-close-surface = false
+
+adjust-cell-height = 12%
+
+
