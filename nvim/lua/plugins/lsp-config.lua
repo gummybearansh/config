@@ -26,22 +26,21 @@ return {
 
 			-- 2. LOCK THE GUTTER COLUMN (Stops screen from jumping/shifting layout)
 			vim.opt.signcolumn = "yes"
-      -- Replaces the annoying '~' markers on empty lines with invisible empty spaces
-      vim.opt.fillchars = { eob = " " }
-        -- 1. FORCE THE COMPLETION POPUPS TO USE THE PURE DARK BACKGROUND
-      local cmp = require("cmp")
-      cmp.setup({
-        window = {
-          completion = cmp.config.window.bordered({
-            -- Tells neovim to strip bright default float windows and make them dark charcoal
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
-          }),
-          documentation = cmp.config.window.bordered({
-            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
-          }),
-        },
-      })
-
+			-- Replaces the annoying '~' markers on empty lines with invisible empty spaces
+			vim.opt.fillchars = { eob = " " }
+			-- 1. FORCE THE COMPLETION POPUPS TO USE THE PURE DARK BACKGROUND
+			local cmp = require("cmp")
+			cmp.setup({
+				window = {
+					completion = cmp.config.window.bordered({
+						-- Tells neovim to strip bright default float windows and make them dark charcoal
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+					}),
+					documentation = cmp.config.window.bordered({
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+					}),
+				},
+			})
 
 			mason_lspconfig.setup({
 				-- THE WEB DEV + CPP STACK
@@ -54,6 +53,7 @@ return {
 					"cssls", -- CSS
 					"tailwindcss", -- Tailwind CSS
 				},
+				automatic_installation = true,
 
 				-- HANDLERS (The Fixes)
 				handlers = {
