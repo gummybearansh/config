@@ -7,11 +7,11 @@ return {
 	-- The trigger is "cp". Type 'cp' then press Enter (or C-K depending on setup)
 	s("cp", {
 		t({
-      "#include <bits/stdc++.h>",
-      "",
+			"#include <bits/stdc++.h>",
+			"",
 			"#define ll long long",
-      '#define dbg(v) cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;',
-      "",
+			'#define dbg(v) cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;',
+			"",
 			"using namespace std;",
 			"",
 			"void solve() {",

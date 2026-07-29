@@ -51,7 +51,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 
--- vim.opt.scrolloff = 10
+vim.opt.scrolloff = 10
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -59,6 +59,7 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.opt.modeline = false
 
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+	group = vim.api.nvim_create_augroup("AutoSave", { clear = true }),
 	callback = function()
 		if vim.bo.modified then
 			vim.schedule(function()
@@ -90,7 +91,6 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 -- Start with all folds OPEN (so you don't open a file and see nothing)
 vim.opt.foldlevel = 99
 
-vim.keymap.set("i", "<D-v>", "<C-r>+", { noremap = true, silent = true })
 
 -- neovide settings
 if vim.g.neovide then
@@ -101,9 +101,6 @@ if vim.g.neovide then
 	vim.keymap.set("n", "<D-v>", '"+p', { noremap = true, silent = true })
 end
 
--- -- 2. Scale (Optional)
--- -- If the UI feels too small/big generally, you can scale the whole app
-vim.g.neovide_scale_factor = 1.0
 
 -- 3. Neovide Cursor Animation Settings
 --
@@ -141,6 +138,7 @@ end)
 
 --
 vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("FormatOptions", { clear = true }),
 	pattern = "*",
 	desc = "Prevent comment continuation",
 	callback = function()
@@ -183,13 +181,6 @@ end, { desc = "Toggle Autocomplete" })
 -- Force gx to use the system 'open' command (macOS specific)
 vim.keymap.set("n", "gx", [[:execute '!open ' . shellescape(expand('<cfile>'), 1)<CR>]], { silent = true })
 
--- Disable swap files for Markdown (Prevents iCloud/Obsidian sync errors)
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = function()
-		vim.opt_local.swapfile = false
-	end,
-})
 
 -- Ensure persistent undo is on (So you still have history if you crash)
 vim.opt.undofile = true
@@ -215,13 +206,15 @@ vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
+-- Keep visual selection after indenting
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
 vim.opt.incsearch = true
 
 -- completely disable swap files
 vim.opt.swapfile = false
 
--- enable persistent undo (history is saved to a file)
-vim.opt.undofile = true
 
 -- optional: save all undo files in one customized location
 -- (keeps your project directories clean)

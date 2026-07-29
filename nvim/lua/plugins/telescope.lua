@@ -1,15 +1,31 @@
 return {
-    "nvim-telescope/telescope.nvim",
-    branch = "master", -- Use a specific tag for stability
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-        local builtin = require("telescope.builtin")
-        
-        -- Keymaps
-        vim.keymap.set("n", "<C-p>", builtin.find_files, {}) -- Find files
-        vim.keymap.set("n", "<leader>fg", builtin.live_grep, {}) -- Find text (grep)
-        vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, {}) -- Find recent files
+	"nvim-telescope/telescope.nvim",
+	branch = "master",
+	dependencies = { "nvim-lua/plenary.nvim" },
+	config = function()
+		local telescope = require("telescope")
+		local builtin = require("telescope.builtin")
 
-        vim.keymap.set("n", "<leader>fx", builtin.diagnostics, {}) -- 'fx' for 'Fix'
-    end,
+		-- Configure Telescope defaults
+		telescope.setup({
+			defaults = {
+				-- Force find_files to show hidden files and ignore git constraints if desired
+				file_ignore_patterns = { "node_modules", ".git/" },
+			},
+			pickers = {
+				find_files = {
+					-- This ensures hidden files (like init.lua in dotfiles) show up
+					hidden = true,
+					-- If you want it to search everything even if it's gitignored:
+					no_ignore = true,
+				},
+			},
+		})
+
+		-- Keymaps
+		vim.keymap.set("n", "<C-p>", builtin.find_files, {})
+		vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+		vim.keymap.set("n", "<leader><leader>", builtin.oldfiles, {})
+		vim.keymap.set("n", "<leader>fx", builtin.diagnostics, {})
+	end,
 }

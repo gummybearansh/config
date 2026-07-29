@@ -23,6 +23,9 @@ return {
 			vim.api.nvim_set_hl(0, "CmpPmenu", { bg = "#181825", fg = "#cdd6f4" }) -- Darker box background
 			vim.api.nvim_set_hl(0, "CmpPmenuSel", { bg = "#313244", fg = "#cdd6f4", bold = true }) -- Selected item
 			vim.api.nvim_set_hl(0, "CmpPmenuBorder", { bg = "#181825", fg = "#45475a" }) -- Optional darker border
+			
+			-- 2. MAKE INLAY HINTS PRETTIER (No background, subtle text, italic)
+			vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#7f849c", bg = "NONE", italic = true })
 
 			-- 2. LOCK THE GUTTER COLUMN (Stops screen from jumping/shifting layout)
 			vim.opt.signcolumn = "yes"
@@ -52,11 +55,13 @@ return {
 					"html", -- HTML
 					"cssls", -- CSS
 					"tailwindcss", -- Tailwind CSS
+					"rust_analyzer",
 				},
 				automatic_installation = true,
 
 				-- HANDLERS (The Fixes)
 				handlers = {
+
 					-- Default handler (applies to things like html, css, etc.)
 					function(server_name)
 						lspconfig[server_name].setup({
@@ -101,6 +106,24 @@ return {
 							},
 						})
 					end,
+
+					["rust_analyzer"] = function()
+						lspconfig.rust_analyzer.setup({
+							capabilities = capabilities,
+							settings = {
+								["rust-analyzer"] = {
+									inlayHints = {
+										bindingModeHints = { enable = true },
+										closureReturnTypeHints = { enable = "always" },
+										lifetimeElisionHints = { enable = "always", useParameterNames = true },
+										parameterHints = { enable = true },
+										typeHints = { enable = true },
+										chainingHints = { enable = true },
+									},
+								},
+							},
+						})
+					end,
 				},
 			})
 
@@ -111,6 +134,17 @@ return {
 				underline = true,
 				update_in_insert = false,
 				severity_sort = true,
+			})
+
+			-- Enable inlay hints on attach
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+						vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+					end
+				end,
 			})
 		end,
 	},
@@ -126,6 +160,13 @@ return {
 
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
+
+			-- Toggle Inlay Hints
+			vim.keymap.set("n", "<leader>th", function()
+				if vim.lsp.inlay_hint then
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+				end
+			end, { desc = "Toggle Inlay Hints" })
 		end,
 	},
 }
