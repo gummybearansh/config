@@ -1,7 +1,7 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	branch = "master",
-	dependencies = { "nvim-lua/plenary.nvim" },
+	dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
 	config = function()
 		local telescope = require("telescope")
 		local builtin = require("telescope.builtin")
@@ -16,11 +16,14 @@ return {
 				find_files = {
 					-- This ensures hidden files (like init.lua in dotfiles) show up
 					hidden = true,
-					-- If you want it to search everything even if it's gitignored:
-					no_ignore = true,
 				},
 			},
+      extensions = {
+        fzf = {}
+      }
 		})
+
+    require('telescope').load_extension('fzf')
 
 		-- Keymaps
 		vim.keymap.set("n", "<C-p>", builtin.find_files, {})

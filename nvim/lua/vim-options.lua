@@ -54,6 +54,7 @@ vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.opt.scrolloff = 10
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit insert mode" })
 
 -- Disable modelines to prevent errors when opening files with "vim:" text
 vim.opt.modeline = false
@@ -212,6 +213,17 @@ vim.keymap.set("v", ">", ">gv")
 
 vim.opt.incsearch = true
 
+-- Automatically reload files when they change on disk
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	group = vim.api.nvim_create_augroup("AutoChecktime", { clear = true }),
+	callback = function()
+		if vim.fn.mode() ~= "c" then
+			vim.cmd("checktime")
+		end
+	end,
+})
+
 -- completely disable swap files
 vim.opt.swapfile = false
 
@@ -227,57 +239,3 @@ vim.opt.smoothscroll = true
 -- removed the extra spacing between neovim and the tmux line
 -- vim.opt.cmdheight = 0
 
--- ==========================================
--- Harpoon Alternative (Telescope Marks)
--- ==========================================
--- Map this to whatever your old Harpoon shortcut was (e.g., <leader>m or <C-e>)
--- Only show A-Z marks in Telescope (True Harpoon mode)
-vim.keymap.set("n", "<C-e>", function()
-	require("telescope.builtin").marks({ mark_type = "global" })
-end, { desc = "View Global Marks" })
-
--- ==========================================
--- Make Lowercase Marks Global
--- ==========================================
-local alphabet = {
-	"a",
-	"b",
-	"c",
-	"d",
-	"e",
-	"f",
-	"g",
-	"h",
-	"i",
-	"j",
-	"k",
-	"l",
-	"m",
-	"n",
-	"o",
-	"p",
-	"q",
-	"r",
-	"s",
-	"t",
-	"u",
-	"v",
-	"w",
-	"x",
-	"y",
-	"z",
-}
-
-for _, char in ipairs(alphabet) do
-	local upper_char = string.upper(char)
-
-	-- Intercept setting the mark (e.g., 'ma' becomes 'mA')
-	vim.keymap.set("n", "m" .. char, "m" .. upper_char, {
-		desc = "Set global mark " .. upper_char,
-	})
-
-	-- Intercept jumping to the mark (e.g., ''a' becomes ''A')
-	vim.keymap.set("n", "'" .. char, "'" .. upper_char, {
-		desc = "Jump to global mark " .. upper_char,
-	})
-end

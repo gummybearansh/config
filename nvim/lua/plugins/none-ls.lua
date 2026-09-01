@@ -12,7 +12,9 @@ return {
 				null_ls.builtins.formatting.stylua,
 
 				-- JAVASCRIPT / TYPESCRIPT / HTML / CSS (Prettier covers all of these)
-				null_ls.builtins.formatting.prettier,
+				null_ls.builtins.formatting.prettier.with({
+					disabled_filetypes = { "markdown", "markdown.mdx" },
+				}),
 
 				-- PYTHON
 				null_ls.builtins.formatting.black, -- Popular Python formatter

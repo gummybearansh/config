@@ -55,6 +55,20 @@ return {
 			},
 			{ "<leader>ns", "<cmd>ObsidianSearch<cr>", desc = "Note: Search" },
 			{ "<leader>nd", "<cmd>ObsidianToday<cr>", desc = "Note: Daily" },
+			{
+				"<leader>nr",
+				function()
+					require("utils.active_days").pick_day_and_revise()
+				end,
+				desc = "Note: Pick day → revise notes",
+			},
+			{
+				"<leader>na",
+				function()
+					require("utils.active_days").open_index()
+				end,
+				desc = "Note: Active days index",
+			},
 			{ "<leader>nt", "<cmd>ObsidianTemplate<cr>", desc = "Note: Insert Template" },
 			{ "<leader>nl", "<cmd>ObsidianLink<cr>", desc = "Note: Link Selection" },
 			{ "<leader>nb", "<cmd>ObsidianBacklinks<cr>", desc = "Note: Show Backlinks" },
@@ -119,6 +133,8 @@ return {
 
 				ui = { enable = false },
 			})
+
+			require("utils.active_days").setup_autocmd()
 		end,
 	},
 }

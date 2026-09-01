@@ -12,7 +12,6 @@ return {
 		dependencies = {
 			"neovim/nvim-lspconfig",
 			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/nvim-cmp",
 		},
 		config = function()
 			local mason_lspconfig = require("mason-lspconfig")
@@ -23,7 +22,7 @@ return {
 			vim.api.nvim_set_hl(0, "CmpPmenu", { bg = "#181825", fg = "#cdd6f4" }) -- Darker box background
 			vim.api.nvim_set_hl(0, "CmpPmenuSel", { bg = "#313244", fg = "#cdd6f4", bold = true }) -- Selected item
 			vim.api.nvim_set_hl(0, "CmpPmenuBorder", { bg = "#181825", fg = "#45475a" }) -- Optional darker border
-			
+
 			-- 2. MAKE INLAY HINTS PRETTIER (No background, subtle text, italic)
 			vim.api.nvim_set_hl(0, "LspInlayHint", { fg = "#7f849c", bg = "NONE", italic = true })
 
@@ -56,6 +55,7 @@ return {
 					"cssls", -- CSS
 					"tailwindcss", -- Tailwind CSS
 					"rust_analyzer",
+					"gopls", -- Go
 				},
 				automatic_installation = true,
 
@@ -63,11 +63,11 @@ return {
 				handlers = {
 
 					-- Default handler (applies to things like html, css, etc.)
-					function(server_name)
-						lspconfig[server_name].setup({
-							capabilities = capabilities,
-						})
-					end,
+					-- function(server_name) print("DEFAULT HANDLER: " .. server_name)
+					-- 	lspconfig[server_name].setup({
+					-- 		capabilities = capabilities,
+					-- 	})
+					-- end,
 
 					-- Fix for C++ (Offset Encoding)
 					["clangd"] = function()
@@ -124,6 +124,25 @@ return {
 							},
 						})
 					end,
+
+					["gopls"] = function()
+						lspconfig.gopls.setup({
+							capabilities = capabilities,
+							settings = {
+								gopls = {
+									hints = {
+										assignVariableTypes = true,
+										compositeLiteralFields = true,
+										compositeLiteralTypes = true,
+										constantValues = true,
+										functionTypeParameters = true,
+										parameterNames = true,
+										rangeVariableTypes = true,
+									},
+								},
+							},
+						})
+					end,
 				},
 			})
 
@@ -153,9 +172,15 @@ return {
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
+			-- Add borders to the hover and signature help windows
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+			vim.lsp.handlers["textDocument/signatureHelp"] =
+				vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
+			vim.keymap.set("n", "grr", vim.lsp.buf.references, {})
 			vim.keymap.set({ "n", "v" }, "<leader>ga", vim.lsp.buf.code_action, {})
 
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
@@ -164,7 +189,13 @@ return {
 			-- Toggle Inlay Hints
 			vim.keymap.set("n", "<leader>th", function()
 				if vim.lsp.inlay_hint then
-					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+					local is_enabled = vim.lsp.inlay_hint.is_enabled({})
+					vim.lsp.inlay_hint.enable(not is_enabled)
+					if not is_enabled then
+						vim.notify("Inlay Hints Enabled", vim.log.levels.INFO)
+					else
+						vim.notify("Inlay Hints Disabled", vim.log.levels.INFO)
+					end
 				end
 			end, { desc = "Toggle Inlay Hints" })
 		end,

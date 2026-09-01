@@ -60,8 +60,6 @@ return {
 				sources = cmp.config.sources({
 					{ name = "luasnip" }, -- Snippets go FIRST so they appear at the top
 					{ name = "nvim_lsp" },
-					{ name = "obsidian" }, -- For existing notes
-					{ name = "obsidian_new" }, -- For creating new notes on the fly
 				}, {
 					{ name = "buffer" },
 				}),

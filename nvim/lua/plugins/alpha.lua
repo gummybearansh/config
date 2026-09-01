@@ -56,23 +56,6 @@ return {
 			end,
 		})
 
-		-- Quality of Life: Reopen Alpha automatically if you close all other buffers
-		vim.api.nvim_create_autocmd("BufEnter", {
-			callback = function()
-				if vim.bo.filetype == "alpha" then
-					return
-				end
 
-				local buf = vim.api.nvim_get_current_buf()
-				if vim.api.nvim_buf_get_name(buf) ~= "" then
-					return
-				end
-				if vim.bo[buf].buftype ~= "" then
-					return
-				end
-
-				vim.cmd("Alpha")
-			end,
-		})
 	end,
 }
