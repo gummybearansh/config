@@ -48,10 +48,14 @@ return {
 					vim.ui.input({ prompt = "New Note Title: " }, function(input)
 						if input and input ~= "" then
 							vim.cmd("ObsidianNew " .. input)
+							-- Add a small delay to ensure the note is fully created and loaded
+							vim.defer_fn(function()
+								vim.cmd("ObsidianTemplate New Note")
+							end, 200)
 						end
 					end)
 				end,
-				desc = "Note: New",
+				desc = "Note: New (with Template)",
 			},
 			{ "<leader>ns", "<cmd>ObsidianSearch<cr>", desc = "Note: Search" },
 			{ "<leader>nd", "<cmd>ObsidianToday<cr>", desc = "Note: Daily" },
