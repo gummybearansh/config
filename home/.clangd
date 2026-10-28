@@ -1,0 +1,11 @@
+CompileFlags:
+  Add:
+    # 1. Tell clangd to look in /usr/local/include (where we put bits/stdc++.h)
+    - "-I/usr/local/include"
+    # 2. Force C++17 or newer so modern features work
+    - "-std=c++17"
+
+Diagnostics:
+  Suppress:
+    # 3. This silences the "Included header is not used" warnings
+    - "unused-includes"

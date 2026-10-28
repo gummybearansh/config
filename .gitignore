@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# iTerm2 runtime daemon and socket files
+iterm2/
+
+# Telemetry and package caches
+configstore/
+
+# Scratch files
+test.md
+
+# Log files
+*.log

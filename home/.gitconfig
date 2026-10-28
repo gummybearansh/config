@@ -1,0 +1,11 @@
+[user]
+	email = gummybearansh@gmail.com
+	name = gummybearansh
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/Users/gummybearansh/.local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/Users/gummybearansh/.local/bin/gh auth git-credential

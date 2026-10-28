@@ -50,7 +50,7 @@ return {
 							vim.cmd("ObsidianNew " .. input)
 							-- Add a small delay to ensure the note is fully created and loaded
 							vim.defer_fn(function()
-								vim.cmd("ObsidianTemplate New Note")
+								vim.cmd("ObsidianTemplate New Note.md")
 							end, 200)
 						end
 					end)
